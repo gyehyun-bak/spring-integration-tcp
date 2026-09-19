@@ -10,13 +10,15 @@ import org.springframework.integration.annotation.ServiceActivator;
 
 import java.util.Collections;
 
+import static com.example.fixedlength.host.SpringIntegrationConfig.RESPONSE_CHANNEL;
+
 @MessageEndpoint
 @Slf4j
 public class RepeatEndpoint {
 
     private static final int MAX_REPEAT_COUNT = 100;
 
-    @ServiceActivator(inputChannel = "REPEAT", outputChannel = SpringIntegrationConfig.HOST_RESPONSE_CHANNEL)
+    @ServiceActivator(inputChannel = "host.request.repeat", outputChannel = RESPONSE_CHANNEL)
     public RepeatResponseMessage repeat(RepeatRequestMessage request) {
         log.atInfo()
                 .addKeyValue("request", request)

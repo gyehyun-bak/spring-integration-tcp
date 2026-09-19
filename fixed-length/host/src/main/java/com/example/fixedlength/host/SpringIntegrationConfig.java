@@ -8,11 +8,15 @@ import org.springframework.integration.ip.dsl.Tcp;
 import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
 import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
 
+import java.util.Locale;
+
 @Configuration
 public class SpringIntegrationConfig {
 
-    public static final String HOST_RESPONSE_CHANNEL = "hostResponse";
     private static final int PORT = 9090;
+
+    public static final String REQUEST_CHANNEL = "host.request";
+    public static final String RESPONSE_CHANNEL = "host.response";
 
     @Bean
     public AbstractServerConnectionFactory serverConnectionFactory() {
@@ -27,14 +31,18 @@ public class SpringIntegrationConfig {
     public IntegrationFlow tcpServerFlow(HostMessageCodec codec) {
         return IntegrationFlow.from(Tcp.inboundGateway(serverConnectionFactory()))
                 .transform(byte[].class, codec::decode)
-                .route(HostMessage.class, request -> request.getTrxCode().name())
+                .route(HostMessage.class, SpringIntegrationConfig::getChannelByTrxCode)
                 .get();
     }
 
     @Bean
     public IntegrationFlow hostResponseFlow(HostMessageCodec codec) {
-        return IntegrationFlow.from(HOST_RESPONSE_CHANNEL)
+        return IntegrationFlow.from(RESPONSE_CHANNEL)
                 .transform(HostMessage.class, codec::encode)
                 .get();
+    }
+
+    private static String getChannelByTrxCode(HostMessage message) {
+        return REQUEST_CHANNEL + "." + message.getTrxCode().name().toLowerCase(Locale.ROOT);
     }
 }

@@ -8,11 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
+import static com.example.fixedlength.host.SpringIntegrationConfig.RESPONSE_CHANNEL;
+
 @MessageEndpoint
 @Slf4j
 public class EchoEndpoint {
 
-    @ServiceActivator(inputChannel = "ECHO", outputChannel = SpringIntegrationConfig.HOST_RESPONSE_CHANNEL)
+    @ServiceActivator(inputChannel = "host.request.echo", outputChannel = RESPONSE_CHANNEL)
     public EchoResponseMessage echo(EchoRequestMessage request) {
         log.atInfo()
                 .addKeyValue("request", request)

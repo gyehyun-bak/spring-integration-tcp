@@ -6,7 +6,7 @@ import com.example.fixedlength.client.dto.RepeatRequestMessage;
 import com.example.fixedlength.client.dto.RepeatResponseMessage;
 import org.springframework.integration.annotation.MessagingGateway;
 
-@MessagingGateway(defaultRequestChannel = "host")
+@MessagingGateway(defaultRequestChannel = "host.request")
 public interface TcpHostGateway {
 
     EchoResponseMessage echo(EchoRequestMessage request);

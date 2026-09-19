@@ -14,6 +14,8 @@ public class SpringIntegrationConfig {
     private static final String HOST = "localhost";
     private static final int PORT = 9090;
 
+    public static final String REQUEST_CHANNEL = "host.request";
+
     @Bean
     public AbstractClientConnectionFactory clientConnectionFactory() {
         TcpNetClientConnectionFactory connectionFactory = new TcpNetClientConnectionFactory(HOST, PORT);
@@ -25,7 +27,7 @@ public class SpringIntegrationConfig {
 
     @Bean
     public IntegrationFlow tcpClientFlow(HostMessageCodec codec) {
-        return IntegrationFlow.from("host")
+        return IntegrationFlow.from(REQUEST_CHANNEL)
                 .transform(HostMessage.class, codec::encode)
                 .handle(Tcp.outboundGateway(clientConnectionFactory()))
                 .transform(byte[].class, codec::decode)

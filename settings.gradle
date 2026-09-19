@@ -1,0 +1,4 @@
+rootProject.name = 'spring-integration-tcp'
+
+include 'simple-echo:host'
+include 'simple-echo:client'

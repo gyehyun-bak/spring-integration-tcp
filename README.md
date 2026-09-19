@@ -2,4 +2,5 @@
 
 ### 프로젝트 구성
 
-1. `simple-echo` : 최소 코드로 구현한 TCP ECHO 클라이언트-서버
+1. `simple-echo` - 최소 코드로 구현한 TCP ECHO 클라이언트-서버
+2. `fixed-length` - 커스텀 고정길이(Fixed Length) 전문 스펙

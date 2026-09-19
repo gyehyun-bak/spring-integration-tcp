@@ -5,11 +5,11 @@
 | 전문 필드명    | 전문 필드 ID  | 타입      | 길이(byte) | 필수 | 비고                                    |
 |----------------|---------------|-----------|------------|------|-----------------------------------------|
 | 전문길이       | messageLength | Number    | 4          | O    | “전문길이” 필드를 제외한 전체 전문 길이 |
-| 전문고유식별자 | messageUuid   | Character | 16         | O    | 전문별 고유식별자(UUID)                 |
+| 전문고유식별자 | messageUuid   | Character | 36         | O    | 전문별 고유식별자(UUID)                 |
 | 전송주체       | sender        | Character | 6          | O    | CLIENT / HOST                           |
 | 전송시각       | sentAt        | Number    | 17         | O    | yyyyMMddHHmmssSSS                       |
 | 거래구분       | trxCode       | Character | 6          | O    | ECHO / REPEAT                           |
-| 응답코드       | code          | Character | 6          | O    | 정상/오류 응답 코드                     |
+| 응답코드       | code          | Character | 6          |      | 정상/오류 응답 코드                     |
 
 ### ECHO 요청/응답
 

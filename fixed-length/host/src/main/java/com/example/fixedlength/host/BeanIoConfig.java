@@ -1,9 +1,9 @@
-package com.example.fixedlength.client;
+package com.example.fixedlength.host;
 
-import com.example.fixedlength.client.dto.EchoRequestMessage;
-import com.example.fixedlength.client.dto.EchoResponseMessage;
-import com.example.fixedlength.client.dto.RepeatRequestMessage;
-import com.example.fixedlength.client.dto.RepeatResponseMessage;
+import com.example.fixedlength.host.dto.EchoRequestMessage;
+import com.example.fixedlength.host.dto.EchoResponseMessage;
+import com.example.fixedlength.host.dto.RepeatRequestMessage;
+import com.example.fixedlength.host.dto.RepeatResponseMessage;
 import org.beanio.StreamFactory;
 import org.beanio.builder.StreamBuilder;
 import org.springframework.context.annotation.Bean;

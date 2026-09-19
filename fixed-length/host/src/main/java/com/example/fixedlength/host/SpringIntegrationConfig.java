@@ -1,36 +1,40 @@
 package com.example.fixedlength.host;
 
-import lombok.extern.slf4j.Slf4j;
+import com.example.fixedlength.host.dto.HostMessage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.ip.dsl.Tcp;
 import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
 import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
 
 @Configuration
-@Slf4j
 public class SpringIntegrationConfig {
 
+    public static final String HOST_RESPONSE_CHANNEL = "hostResponse";
     private static final int PORT = 9090;
 
     @Bean
     public AbstractServerConnectionFactory serverConnectionFactory() {
-        return new TcpNetServerConnectionFactory(PORT);
+        TcpNetServerConnectionFactory connectionFactory = new TcpNetServerConnectionFactory(PORT);
+        MessageLengthHeaderSerializer serializer = new MessageLengthHeaderSerializer();
+        connectionFactory.setSerializer(serializer);
+        connectionFactory.setDeserializer(serializer);
+        return connectionFactory;
     }
 
     @Bean
-    public IntegrationFlow tcpServerFlow() {
+    public IntegrationFlow tcpServerFlow(HostMessageCodec codec) {
         return IntegrationFlow.from(Tcp.inboundGateway(serverConnectionFactory()))
-                .transform(Transformers.objectToString())
-                .handle(((payload, headers) -> {
-                    log.atInfo()
-                            .addKeyValue("headers", headers)
-                            .addKeyValue("payload", payload)
-                            .log("Message received.");
-                    return "ECHO: " + payload;
-                }))
+                .transform(byte[].class, codec::decode)
+                .route(HostMessage.class, request -> request.getTrxCode().name())
+                .get();
+    }
+
+    @Bean
+    public IntegrationFlow hostResponseFlow(HostMessageCodec codec) {
+        return IntegrationFlow.from(HOST_RESPONSE_CHANNEL)
+                .transform(HostMessage.class, codec::encode)
                 .get();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fixedlength.client.dto;
+package com.example.fixedlength.host.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,7 @@ import org.beanio.annotation.Field;
 @Setter
 @ToString
 public abstract class HostMessage {
+    public abstract TrxCode getTrxCode();
 
     @Field(ordinal = 1, length = 36)
     private String messageUuid;

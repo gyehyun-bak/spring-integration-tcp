@@ -1,4 +1,4 @@
-package com.example.fixedlength.client.dto;
+package com.example.fixedlength.host.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import org.beanio.annotation.Record;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class EchoRequestMessage extends HostMessage {
+public class EchoResponseMessage extends HostMessage {
 
     @Field(ordinal = 4, length = 6, rid = true, literal = "ECHO")
     private TrxCode trxCode = TrxCode.ECHO;

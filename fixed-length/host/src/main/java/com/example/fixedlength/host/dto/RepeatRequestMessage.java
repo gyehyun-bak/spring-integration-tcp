@@ -1,4 +1,4 @@
-package com.example.fixedlength.client.dto;
+package com.example.fixedlength.host.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,9 +1,9 @@
 package com.example.fixedlength.client;
 
+import com.example.fixedlength.client.dto.HostMessage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.ip.dsl.Tcp;
 import org.springframework.integration.ip.tcp.connection.AbstractClientConnectionFactory;
 import org.springframework.integration.ip.tcp.connection.TcpNetClientConnectionFactory;
@@ -16,14 +16,19 @@ public class SpringIntegrationConfig {
 
     @Bean
     public AbstractClientConnectionFactory clientConnectionFactory() {
-        return new TcpNetClientConnectionFactory(HOST, PORT);
+        TcpNetClientConnectionFactory connectionFactory = new TcpNetClientConnectionFactory(HOST, PORT);
+        MessageLengthHeaderSerializer serializer = new MessageLengthHeaderSerializer();
+        connectionFactory.setSerializer(serializer);
+        connectionFactory.setDeserializer(serializer);
+        return connectionFactory;
     }
 
     @Bean
-    public IntegrationFlow tcpClientFlow() {
-        return IntegrationFlow.from("tcpClientFlow.input")
+    public IntegrationFlow tcpClientFlow(HostMessageCodec codec) {
+        return IntegrationFlow.from("host")
+                .transform(HostMessage.class, codec::encode)
                 .handle(Tcp.outboundGateway(clientConnectionFactory()))
-                .transform(Transformers.objectToString())
+                .transform(byte[].class, codec::decode)
                 .get();
     }
 }

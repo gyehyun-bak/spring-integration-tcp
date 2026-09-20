@@ -1,6 +1,7 @@
 package com.example.masking.host;
 
 import com.example.masking.host.dto.HostMessage;
+import com.example.masking.host.mask.MaskedLoggingWireTap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -29,18 +30,18 @@ public class SpringIntegrationConfig {
     }
 
     @Bean
-    public IntegrationFlow hostRequestFlow(HostMessageCodec codec) {
+    public IntegrationFlow hostRequestFlow(HostMessageCodec codec, MaskedLoggingWireTap loggingWireTap) {
         return IntegrationFlow.from(Tcp.inboundGateway(serverConnectionFactory()))
                 .transform(byte[].class, codec::decode)
-                .log(Message::getPayload)
+                .wireTap(flow -> flow.handle(message -> loggingWireTap.log("Received message.", message)))
                 .route(HostMessage.class, SpringIntegrationConfig::getChannelByTrxCode)
                 .get();
     }
 
     @Bean
-    public IntegrationFlow hostResponseFlow(HostMessageCodec codec) {
+    public IntegrationFlow hostResponseFlow(HostMessageCodec codec, MaskedLoggingWireTap loggingWireTap) {
         return IntegrationFlow.from(HOST_RESPONSE_CHANNEL)
-                .log(Message::getPayload)
+                .wireTap(flow -> flow.handle(message -> loggingWireTap.log("Sending message.", message)))
                 .transform(HostMessage.class, codec::encode)
                 .get();
     }

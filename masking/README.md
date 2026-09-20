@@ -1,45 +1,43 @@
-## 전문 스펙
+## @Mask 어노테이션 적용
 
-- 타입에서 `Number`는 '0' 패딩 우측 정렬이다.
-- 타입에서 `Character`는 ' '(스페이스) 패딩 좌측 정렬이다.
+```java
+@Record
+@Getter
+@Setter
+@ToString(callSuper = true)
+public class EchoRequestMessage extends HostMessage {
 
-### 공통 헤더
+    @Field(ordinal = 4, length = 6, rid = true, literal = "ECHO")
+    private TrxCode trxCode = TrxCode.ECHO;
 
-| 전문 필드명    | 전문 필드 ID  | 타입      | 길이(byte) | 필수 | 비고                                    |
-|----------------|---------------|-----------|------------|------|-----------------------------------------|
-| 전문길이       | messageLength | Number    | 4          | O    | “전문길이” 필드를 제외한 전체 전문 길이 |
-| 전문고유식별자 | messageUuid   | Character | 36         | O    | 전문별 고유식별자(UUID)                 |
-| 전송주체       | sender        | Character | 6          | O    | CLIENT / HOST                           |
-| 전송시각       | sentAt        | Number    | 17         | O    | yyyyMMddHHmmssSSS                       |
-| 거래구분       | trxCode       | Character | 6          | O    | ECHO / REPEAT                           |
-| 응답코드       | code          | Character | 6          |      | 정상/오류 응답 코드                     |
+    @Field(ordinal = 6, length = 100)
+    @Mask(start = 2, end = 6, maskChar = '*') // '*'가 default지만 API 이해를 위해 표기
+    private String message;
+}
+```
 
-### ECHO 요청/응답
+## 테스트 응답
 
-| 전문 필드명 | 전문 필드 ID | 타입      | 길이(byte) | 필수 | 비고 |
-|-------------|--------------|-----------|------------|------|------|
-| 메시지      | message      | Character | 100        | O    |      |
+```json
+{
+  "code": "S00000",
+  "message": "hello world",
+  "messageUuid": "4d77b569-f5ac-4341-af17-bb0840ea8aa5",
+  "sender": "HOST",
+  "sentAt": "20260920163122677",
+  "trxCode": "ECHO"
+}
+```
 
-### REPEAT 요청
+## 요청 전문 로그
 
-| 전문 필드명       | 전문 필드 ID | 타입      | 길이(byte) | 필수 | 비고                              |
-|-------------------|--------------|-----------|------------|------|-----------------------------------|
-| 메시지 반복 건 수 | repeatCount  | Number    | 4          | O    | 반복시킬 메시지 건 수(최대 100건) |
-| 메시지            | message      | Character | 100        | O    | 반복시킬 메시지                   |
-
-### REPEAT 응답
-
-| 전문 필드명  | 전문 필드 ID | 타입      | 길이(byte) | 필수 | 비고              |
-|--------------|--------------|-----------|------------|------|-------------------|
-| 메시지 건 수 | messageCount | Number    | 4          | O    | 반복 메시지 건 수 |
-| 메시지       | message      | Character | 100        |      | 메시지 1건        |
-
-## 응답 코드(6 byte)
-
-| 코드   | 설명             |
-|--------|------------------|
-| S00000 | 성공             |
-| E00001 | 전문 형식 오류   |
-| E00002 | 필수값 누락      |
-| E00003 | 유효하지 않은 값 |
-| E99999 | 시스템 오류      |
+```json
+{
+  "code": null,
+  "message": "he****world",
+  "messageUuid": "39ccfa2d-7d07-418b-b373-7d77b5143d4b",
+  "sender": "CLIENT",
+  "sentAt": "20260920163408917",
+  "trxCode": "ECHO"
+}
+```

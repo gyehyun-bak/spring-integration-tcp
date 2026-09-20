@@ -2,6 +2,7 @@ package com.example.masking.client.dto.request;
 
 import com.example.masking.client.dto.HostMessage;
 import com.example.masking.client.dto.TrxCode;
+import com.example.masking.client.mask.Mask;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,5 +19,6 @@ public class EchoRequestMessage extends HostMessage {
     private TrxCode trxCode = TrxCode.ECHO;
 
     @Field(ordinal = 6, length = 100)
+    @Mask(start = 2, end = 6, maskChar = '*')
     private String message;
 }

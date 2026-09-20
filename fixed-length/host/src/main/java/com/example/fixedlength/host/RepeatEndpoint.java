@@ -8,14 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
 import static com.example.fixedlength.host.SpringIntegrationConfig.HOST_RESPONSE_CHANNEL;
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 @MessageEndpoint
 @Slf4j
 public class RepeatEndpoint {
-
     private static final int MAX_REPEAT_COUNT = 100;
 
     @ServiceActivator(inputChannel = "host.request.repeat", outputChannel = HOST_RESPONSE_CHANNEL)
@@ -24,6 +26,7 @@ public class RepeatEndpoint {
         response.setMessageUuid(request.getMessageUuid());
         response.setSender(Sender.HOST);
         response.setMessageCount(0);
+        response.setSentAt(LocalDateTime.now().format(ofPattern("yyyyMMddHHmmssSSS")));
 
         Integer repeatCount = request.getRepeatCount();
         if (repeatCount == null || request.getMessage() == null || request.getMessage().isBlank()) {

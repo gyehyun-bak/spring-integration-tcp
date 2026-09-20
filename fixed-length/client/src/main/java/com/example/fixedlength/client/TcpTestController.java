@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class TcpTestController {
-
     private final TcpHostGateway tcpHostGateway;
 
     @PostMapping("/echo")
@@ -26,6 +29,7 @@ public class TcpTestController {
         request.setMessageUuid(UUID.randomUUID().toString());
         request.setSender(Sender.CLIENT);
         request.setMessage(message);
+        request.setSentAt(LocalDateTime.now().format(ofPattern("yyyyMMddHHmmssSSS")));
 
         return tcpHostGateway.echo(request);
     }
@@ -37,6 +41,7 @@ public class TcpTestController {
         request.setSender(Sender.CLIENT);
         request.setRepeatCount(times);
         request.setMessage(message);
+        request.setSentAt(LocalDateTime.now().format(ofPattern("yyyyMMddHHmmssSSS")));
 
         return tcpHostGateway.repeat(request);
     }

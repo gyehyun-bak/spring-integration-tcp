@@ -15,13 +15,10 @@ import java.time.format.DateTimeFormatter;
 public class HostMessageCodec {
 
     private static final Charset BYTE_PRESERVING_CHARSET = StandardCharsets.ISO_8859_1;
-    private static final DateTimeFormatter SENT_AT = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 
     private final StreamFactory streamFactory;
 
     public byte[] encode(HostMessage request) {
-        request.setSentAt(LocalDateTime.now().format(SENT_AT));
-
         return streamFactory.createMarshaller(BeanIoConfig.HOST_REQUEST_STREAM)
                 .marshal(request)
                 .toString()

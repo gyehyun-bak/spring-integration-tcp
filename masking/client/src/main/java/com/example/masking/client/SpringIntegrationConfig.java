@@ -1,6 +1,7 @@
 package com.example.masking.client;
 
 import com.example.masking.client.dto.HostMessage;
+import com.example.masking.client.mask.MaskedLoggingWireTap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +9,6 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.ip.dsl.Tcp;
 import org.springframework.integration.ip.tcp.connection.AbstractClientConnectionFactory;
 import org.springframework.integration.ip.tcp.connection.TcpNetClientConnectionFactory;
-import org.springframework.messaging.Message;
 
 @Configuration
 @Slf4j
@@ -28,13 +28,13 @@ public class SpringIntegrationConfig {
     }
 
     @Bean
-    public IntegrationFlow hostRequestFlow(HostMessageCodec codec) {
+    public IntegrationFlow hostRequestFlow(HostMessageCodec codec, MaskedLoggingWireTap loggingWireTap) {
         return IntegrationFlow.from(HOST_REQUEST_CHANNEL)
-                .log(Message::getPayload)
+                .wireTap(flow -> flow.handle(message -> loggingWireTap.log("Sending message.", message)))
                 .transform(HostMessage.class, codec::encode)
                 .handle(Tcp.outboundGateway(clientConnectionFactory()))
                 .transform(byte[].class, codec::decode)
-                .log(Message::getPayload)
+                .wireTap(flow -> flow.handle(message -> loggingWireTap.log("Received message.", message)))
                 .get();
     }
 }

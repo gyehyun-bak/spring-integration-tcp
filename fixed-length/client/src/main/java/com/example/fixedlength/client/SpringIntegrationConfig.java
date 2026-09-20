@@ -14,7 +14,7 @@ import org.springframework.messaging.Message;
 @Slf4j
 public class SpringIntegrationConfig {
 
-    public static final String REQUEST_CHANNEL = "host.request";
+    public static final String HOST_REQUEST_CHANNEL = "host.request";
     private static final String HOST = "localhost";
     private static final int PORT = 9090;
 
@@ -29,7 +29,7 @@ public class SpringIntegrationConfig {
 
     @Bean
     public IntegrationFlow hostRequestFlow(HostMessageCodec codec) {
-        return IntegrationFlow.from(REQUEST_CHANNEL)
+        return IntegrationFlow.from(HOST_REQUEST_CHANNEL)
                 .log(Message::getPayload)
                 .transform(HostMessage.class, codec::encode)
                 .handle(Tcp.outboundGateway(clientConnectionFactory()))

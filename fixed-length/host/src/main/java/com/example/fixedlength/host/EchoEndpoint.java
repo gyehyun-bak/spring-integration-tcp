@@ -1,20 +1,20 @@
 package com.example.fixedlength.host;
 
-import com.example.fixedlength.host.dto.EchoRequestMessage;
-import com.example.fixedlength.host.dto.EchoResponseMessage;
+import com.example.fixedlength.host.dto.request.EchoRequestMessage;
+import com.example.fixedlength.host.dto.response.EchoResponseMessage;
 import com.example.fixedlength.host.dto.ResponseCode;
 import com.example.fixedlength.host.dto.Sender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
-import static com.example.fixedlength.host.SpringIntegrationConfig.RESPONSE_CHANNEL;
+import static com.example.fixedlength.host.SpringIntegrationConfig.HOST_RESPONSE_CHANNEL;
 
 @MessageEndpoint
 @Slf4j
 public class EchoEndpoint {
 
-    @ServiceActivator(inputChannel = "host.request.echo", outputChannel = RESPONSE_CHANNEL)
+    @ServiceActivator(inputChannel = "host.request.echo", outputChannel = HOST_RESPONSE_CHANNEL)
     public EchoResponseMessage echo(EchoRequestMessage request) {
         EchoResponseMessage response = new EchoResponseMessage();
         response.setMessageUuid(request.getMessageUuid());

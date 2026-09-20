@@ -1,5 +1,7 @@
-package com.example.fixedlength.client.dto;
+package com.example.fixedlength.client.dto.response;
 
+import com.example.fixedlength.client.dto.HostMessage;
+import com.example.fixedlength.client.dto.TrxCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

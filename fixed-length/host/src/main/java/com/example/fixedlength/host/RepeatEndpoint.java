@@ -1,7 +1,7 @@
 package com.example.fixedlength.host;
 
-import com.example.fixedlength.host.dto.RepeatRequestMessage;
-import com.example.fixedlength.host.dto.RepeatResponseMessage;
+import com.example.fixedlength.host.dto.request.RepeatRequestMessage;
+import com.example.fixedlength.host.dto.response.RepeatResponseMessage;
 import com.example.fixedlength.host.dto.ResponseCode;
 import com.example.fixedlength.host.dto.Sender;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,7 @@ import org.springframework.integration.annotation.ServiceActivator;
 
 import java.util.Collections;
 
-import static com.example.fixedlength.host.SpringIntegrationConfig.RESPONSE_CHANNEL;
+import static com.example.fixedlength.host.SpringIntegrationConfig.HOST_RESPONSE_CHANNEL;
 
 @MessageEndpoint
 @Slf4j
@@ -18,7 +18,7 @@ public class RepeatEndpoint {
 
     private static final int MAX_REPEAT_COUNT = 100;
 
-    @ServiceActivator(inputChannel = "host.request.repeat", outputChannel = RESPONSE_CHANNEL)
+    @ServiceActivator(inputChannel = "host.request.repeat", outputChannel = HOST_RESPONSE_CHANNEL)
     public RepeatResponseMessage repeat(RepeatRequestMessage request) {
         RepeatResponseMessage response = new RepeatResponseMessage();
         response.setMessageUuid(request.getMessageUuid());

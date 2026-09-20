@@ -16,8 +16,8 @@ public class SpringIntegrationConfig {
 
     private static final int PORT = 9090;
 
-    public static final String REQUEST_CHANNEL = "host.request";
-    public static final String RESPONSE_CHANNEL = "host.response";
+    public static final String HOST_REQUEST_CHANNEL = "host.request";
+    public static final String HOST_RESPONSE_CHANNEL = "host.response";
 
     @Bean
     public AbstractServerConnectionFactory serverConnectionFactory() {
@@ -39,13 +39,13 @@ public class SpringIntegrationConfig {
 
     @Bean
     public IntegrationFlow hostResponseFlow(HostMessageCodec codec) {
-        return IntegrationFlow.from(RESPONSE_CHANNEL)
+        return IntegrationFlow.from(HOST_RESPONSE_CHANNEL)
                 .log(Message::getPayload)
                 .transform(HostMessage.class, codec::encode)
                 .get();
     }
 
     private static String getChannelByTrxCode(HostMessage message) {
-        return REQUEST_CHANNEL + "." + message.getTrxCode().name().toLowerCase(Locale.ROOT);
+        return HOST_REQUEST_CHANNEL + "." + message.getTrxCode().name().toLowerCase(Locale.ROOT);
     }
 }

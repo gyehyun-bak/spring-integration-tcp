@@ -20,14 +20,14 @@ public class HostMessageCodec {
     private final StreamFactory streamFactory;
 
     public HostMessage decode(byte[] request) {
-        return (HostMessage) streamFactory.createUnmarshaller(BeanIoConfig.REQUEST_STREAM)
+        return (HostMessage) streamFactory.createUnmarshaller(BeanIoConfig.HOST_REQUEST_STREAM)
                 .unmarshal(new String(request, BYTE_PRESERVING_CHARSET));
     }
 
     public byte[] encode(HostMessage response) {
         response.setSentAt(LocalDateTime.now().format(SENT_AT));
 
-        return streamFactory.createMarshaller(BeanIoConfig.RESPONSE_STREAM)
+        return streamFactory.createMarshaller(BeanIoConfig.HOST_RESPONSE_STREAM)
                 .marshal(response)
                 .toString()
                 .getBytes(BYTE_PRESERVING_CHARSET);

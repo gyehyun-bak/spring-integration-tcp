@@ -1,9 +1,9 @@
 package com.example.fixedlength.client;
 
-import com.example.fixedlength.client.dto.EchoRequestMessage;
-import com.example.fixedlength.client.dto.EchoResponseMessage;
-import com.example.fixedlength.client.dto.RepeatRequestMessage;
-import com.example.fixedlength.client.dto.RepeatResponseMessage;
+import com.example.fixedlength.client.dto.request.EchoRequestMessage;
+import com.example.fixedlength.client.dto.response.EchoResponseMessage;
+import com.example.fixedlength.client.dto.request.RepeatRequestMessage;
+import com.example.fixedlength.client.dto.response.RepeatResponseMessage;
 import com.example.fixedlength.client.dto.Sender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

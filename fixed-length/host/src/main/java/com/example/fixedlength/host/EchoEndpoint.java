@@ -16,10 +16,6 @@ public class EchoEndpoint {
 
     @ServiceActivator(inputChannel = "host.request.echo", outputChannel = RESPONSE_CHANNEL)
     public EchoResponseMessage echo(EchoRequestMessage request) {
-        log.atInfo()
-                .addKeyValue("request", request)
-                .log("Received ECHO request.");
-
         EchoResponseMessage response = new EchoResponseMessage();
         response.setMessageUuid(request.getMessageUuid());
         response.setSender(Sender.HOST);
@@ -28,13 +24,9 @@ public class EchoEndpoint {
             response.setCode(ResponseCode.MISSING_VALUE);
             return response;
         }
+
         response.setCode(ResponseCode.SUCCESS);
         response.setMessage(request.getMessage());
-
-        log.atInfo()
-                .addKeyValue("response", response)
-                .log("Sending ECHO response.");
-
         return response;
     }
 }

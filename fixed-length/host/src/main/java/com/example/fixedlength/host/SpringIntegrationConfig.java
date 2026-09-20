@@ -7,6 +7,7 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.ip.dsl.Tcp;
 import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
 import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
+import org.springframework.messaging.Message;
 
 import java.util.Locale;
 
@@ -20,17 +21,18 @@ public class SpringIntegrationConfig {
 
     @Bean
     public AbstractServerConnectionFactory serverConnectionFactory() {
-        TcpNetServerConnectionFactory connectionFactory = new TcpNetServerConnectionFactory(PORT);
-        MessageLengthHeaderSerializer serializer = new MessageLengthHeaderSerializer();
+        var connectionFactory = new TcpNetServerConnectionFactory(PORT);
+        var serializer = new AsciiLengthHeaderSerializer();
         connectionFactory.setSerializer(serializer);
         connectionFactory.setDeserializer(serializer);
         return connectionFactory;
     }
 
     @Bean
-    public IntegrationFlow tcpServerFlow(HostMessageCodec codec) {
+    public IntegrationFlow hostRequestFlow(HostMessageCodec codec) {
         return IntegrationFlow.from(Tcp.inboundGateway(serverConnectionFactory()))
                 .transform(byte[].class, codec::decode)
+                .log(Message::getPayload)
                 .route(HostMessage.class, SpringIntegrationConfig::getChannelByTrxCode)
                 .get();
     }
@@ -38,6 +40,7 @@ public class SpringIntegrationConfig {
     @Bean
     public IntegrationFlow hostResponseFlow(HostMessageCodec codec) {
         return IntegrationFlow.from(RESPONSE_CHANNEL)
+                .log(Message::getPayload)
                 .transform(HostMessage.class, codec::encode)
                 .get();
     }

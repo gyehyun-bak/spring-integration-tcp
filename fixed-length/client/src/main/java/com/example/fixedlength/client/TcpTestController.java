@@ -27,17 +27,7 @@ public class TcpTestController {
         request.setSender(Sender.CLIENT);
         request.setMessage(message);
 
-        log.atInfo()
-                .addKeyValue("request", request)
-                .log("Sending ECHO request.");
-
-        EchoResponseMessage response = tcpHostGateway.echo(request);
-
-        log.atInfo()
-                .addKeyValue("response", response)
-                .log("Received ECHO response.");
-
-        return response;
+        return tcpHostGateway.echo(request);
     }
 
     @PostMapping("/repeat")
@@ -48,16 +38,6 @@ public class TcpTestController {
         request.setRepeatCount(times);
         request.setMessage(message);
 
-        log.atInfo()
-                .addKeyValue("request", request)
-                .log("Sending REPEAT request.");
-
-        RepeatResponseMessage response = tcpHostGateway.repeat(request);
-
-        log.atInfo()
-                .addKeyValue("response", response)
-                .log("Received REPEAT response.");
-
-        return response;
+        return tcpHostGateway.repeat(request);
     }
 }

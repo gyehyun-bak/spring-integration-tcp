@@ -20,10 +20,6 @@ public class RepeatEndpoint {
 
     @ServiceActivator(inputChannel = "host.request.repeat", outputChannel = RESPONSE_CHANNEL)
     public RepeatResponseMessage repeat(RepeatRequestMessage request) {
-        log.atInfo()
-                .addKeyValue("request", request)
-                .log("Received REPEAT request.");
-
         RepeatResponseMessage response = new RepeatResponseMessage();
         response.setMessageUuid(request.getMessageUuid());
         response.setSender(Sender.HOST);
@@ -42,11 +38,6 @@ public class RepeatEndpoint {
         response.setCode(ResponseCode.SUCCESS);
         response.setMessageCount(repeatCount);
         response.setMessages(Collections.nCopies(repeatCount, request.getMessage()));
-
-        log.atInfo()
-                .addKeyValue("response", response)
-                .log("Sending REPEAT response.");
-
         return response;
     }
 }

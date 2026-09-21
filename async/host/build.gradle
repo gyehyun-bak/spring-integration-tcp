@@ -1,0 +1,10 @@
+plugins {
+	id 'org.springframework.boot'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'org.springframework.integration:spring-integration-ip'
+	implementation 'com.github.beanio:beanio:3.2.1'
+	implementation 'org.springframework.boot:spring-boot-starter-json'
+}

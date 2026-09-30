@@ -9,7 +9,7 @@ import org.springframework.integration.ip.tcp.connection.AbstractClientConnectio
 import org.springframework.integration.ip.tcp.connection.TcpNetClientConnectionFactory;
 
 @Configuration
-public class TcpClientConfiguration {
+public class ClientConfig {
 
     private static final String HOST = "localhost";
     private static final int PORT = 9090;
@@ -21,7 +21,7 @@ public class TcpClientConfiguration {
 
     @Bean
     public IntegrationFlow tcpClientFlow() {
-        return IntegrationFlow.from("tcpClientFlow.input")
+        return IntegrationFlow.from("host")
                 .handle(Tcp.outboundGateway(clientConnectionFactory()))
                 .transform(Transformers.objectToString())
                 .get();

@@ -11,7 +11,7 @@ import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionF
 
 @Configuration
 @Slf4j
-public class TcpHostConfiguration {
+public class HostConfig {
 
     private static final int PORT = 9090;
 

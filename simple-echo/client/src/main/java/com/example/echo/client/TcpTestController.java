@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class TcpTestController {
 
-    private final TcpClientGateway tcpClientGateway;
+    private final HostGateway hostGateway;
 
     @PostMapping("/echo")
     public String send(@RequestParam String message) {
         log.atInfo()
                 .addKeyValue("message", message)
                 .log("Sending message.");
-        return tcpClientGateway.send(message);
+        return hostGateway.sendAndReceive(message);
     }
 }

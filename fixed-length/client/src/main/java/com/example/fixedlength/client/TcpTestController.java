@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
@@ -21,7 +20,7 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 @RequiredArgsConstructor
 @Slf4j
 public class TcpTestController {
-    private final TcpHostGateway tcpHostGateway;
+    private final HostGateway hostGateway;
 
     @PostMapping("/echo")
     public EchoResponseMessage echo(@RequestParam String message) {
@@ -31,7 +30,7 @@ public class TcpTestController {
         request.setMessage(message);
         request.setSentAt(LocalDateTime.now().format(ofPattern("yyyyMMddHHmmssSSS")));
 
-        return tcpHostGateway.echo(request);
+        return hostGateway.echo(request);
     }
 
     @PostMapping("/repeat")
@@ -43,6 +42,6 @@ public class TcpTestController {
         request.setMessage(message);
         request.setSentAt(LocalDateTime.now().format(ofPattern("yyyyMMddHHmmssSSS")));
 
-        return tcpHostGateway.repeat(request);
+        return hostGateway.repeat(request);
     }
 }

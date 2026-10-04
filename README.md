@@ -12,5 +12,5 @@ Spring Integration과 몇 가지 오픈소스를 활용하여 TCP 전문 통신�
 |:-----|----------------|------------------------------------------------------------------------------------------------------------------------------|
 | 1    | `simple-echo`  | [Spring Integration 소개와 간단한 TCP Echo Client/Server 구현하기](https://velog.io/@gyehyunbak/spring-integration-tcp-echo) |
 | 2    | `framing`      | (작성 중) Spring Integration TCP Support의 흐름과 다양한 규격에 맞게 메시지 경계 구분하기                                    |
-| 3    | `fixed-length` | (작성 중) BeanIO 기반 고정길이(Fixed-Length) 데이터 포맷의 직렬화/역직렬화(Marshalling/Unmarshalling) 구현하기               |
+| 3    | `fixed-length` | (작성 중) BeanIO 기반 고정길이(Fixed-Length) 데이터 포맷 직렬화/역직렬화(Marshalling/Unmarshalling) 구현하기                 |
 | 4    | `masking`      | (작성 중) 커스텀 Jackson ValueSerializer와 어노테이션으로 전문 로그에서 민감정보 필드 마스킹하기                             |

@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: fixed-length-client
-  jackson:
-    datatype:
-      enum:
-        write-enums-using-to-string: true

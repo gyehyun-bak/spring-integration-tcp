@@ -1,10 +1,16 @@
-## Spring Integration 기반 통신 패턴별 TCP 전문 통신 구현
+## Spring Integration 기반 TCP 전문 통신 구현
+
+### 소개
+
+Spring Integration과 몇 가지 오픈소스를 활용하여 TCP 전문 통신에서의 주요 패턴과 트러블슈팅을 구현하고 설명한 블로그 시리즈의 소스 코드입니다.
 
 ### 프로젝트 구성
 
-1. `simple-echo` - 최소 코드로 구현한 TCP ECHO 클라이언트-서버
-2. `fixed-length` - BeanIO 기반 커스텀 고정길이(Fixed-Length) EUC-KR 전문 직렬화/역직렬화(marshal/unmarshal)
-3. `masking` - Jackson `ValueSerializer`를 활용한 로그 마스킹 구현
-4. `async` - 비동기 통신 패턴(한 소켓에서 동시에 다수의 요청-응답. Correlation 패턴)
-5. `two-way` - 요청 포트와 응답 포트를 별개로
-6. `ack` - 전문 수신에 대한 수신확인응답(ACK) 반환
+아래는 각 프로젝트별 블로그 포스트 링크입니다.
+
+| 순서 | 패키지명       | 블로그 포스트                                                                                                                |
+|:-----|----------------|------------------------------------------------------------------------------------------------------------------------------|
+| 1    | `simple-echo`  | [Spring Integration 소개와 간단한 TCP Echo Client/Server 구현하기](https://velog.io/@gyehyunbak/spring-integration-tcp-echo) |
+| 2    | `framing`      | (작성 중) Spring Integration TCP Support의 흐름과 다양한 규격에 맞게 메시지 경계 구분하기                                    |
+| 3    | `fixed-length` | (작성 중) BeanIO 기반 고정길이(Fixed-Length) 데이터 포맷의 직렬화/역직렬화(Marshalling/Unmarshalling) 구현하기               |
+| 4    | `masking`      | (작성 중) 커스텀 Jackson ValueSerializer와 어노테이션으로 전문 로그에서 민감정보 필드 마스킹하기                             |

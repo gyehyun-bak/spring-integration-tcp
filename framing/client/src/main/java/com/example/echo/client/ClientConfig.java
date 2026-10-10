@@ -16,7 +16,11 @@ public class ClientConfig {
 
     @Bean
     public AbstractClientConnectionFactory clientConnectionFactory() {
-        return new TcpNetClientConnectionFactory(HOST, PORT);
+        var factory = new TcpNetClientConnectionFactory(HOST, PORT);
+        var serializer = new AsciiLengthHeaderSerializer();
+        factory.setSerializer(serializer);
+        factory.setDeserializer(serializer);
+        return factory;
     }
 
     @Bean

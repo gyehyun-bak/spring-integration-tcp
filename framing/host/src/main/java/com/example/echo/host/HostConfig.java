@@ -17,7 +17,11 @@ public class HostConfig {
 
     @Bean
     public AbstractServerConnectionFactory serverConnectionFactory() {
-        return new TcpNetServerConnectionFactory(PORT);
+        var factory = new TcpNetServerConnectionFactory(PORT);
+        var serializer = new AsciiLengthHeaderSerializer();
+        factory.setSerializer(serializer);
+        factory.setDeserializer(serializer);
+        return factory;
     }
 
     @Bean

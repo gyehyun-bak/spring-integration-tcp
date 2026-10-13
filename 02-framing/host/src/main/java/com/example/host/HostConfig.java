@@ -1,0 +1,40 @@
+package com.example.host;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.dsl.Transformers;
+import org.springframework.integration.ip.dsl.Tcp;
+import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
+import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
+
+@Configuration
+@Slf4j
+public class HostConfig {
+
+    private static final int PORT = 9090;
+
+    @Bean
+    public AbstractServerConnectionFactory serverConnectionFactory() {
+        var factory = new TcpNetServerConnectionFactory(PORT);
+        var serializer = new AsciiLengthHeaderSerializer();
+        factory.setSerializer(serializer);
+        factory.setDeserializer(serializer);
+        return factory;
+    }
+
+    @Bean
+    public IntegrationFlow tcpServerFlow() {
+        return IntegrationFlow.from(Tcp.inboundGateway(serverConnectionFactory()))
+                .transform(Transformers.objectToString())
+                .handle(((payload, headers) -> {
+                    log.atInfo()
+                            .addKeyValue("payload", payload)
+                            .addKeyValue("headers", headers)
+                            .log("Message received.");
+                    return "ECHO: " + payload;
+                }))
+                .get();
+    }
+}

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: echo-host
+
+logging:
+  level:
+    com.example: DEBUG
+    org.springframework.integration: TRACE

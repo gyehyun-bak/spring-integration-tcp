@@ -2,7 +2,13 @@ spring:
   application:
     name: echo-host
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics
+
 logging:
   level:
-    com.example: DEBUG
-    org.springframework.integration: TRACE
+    com.example: INFO
+    org.springframework.integration: INFO

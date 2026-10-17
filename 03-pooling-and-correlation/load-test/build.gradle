@@ -1,0 +1,11 @@
+plugins {
+	id 'application'
+}
+
+dependencies {
+	implementation 'org.hdrhistogram:HdrHistogram:2.2.2'
+}
+
+application {
+	mainClass = 'com.example.loadtest.LoadTest'
+}

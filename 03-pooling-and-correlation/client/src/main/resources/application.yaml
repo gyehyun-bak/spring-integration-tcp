@@ -4,5 +4,5 @@ spring:
 
 logging:
   level:
-    com.example: DEBUG
-    org.springframework.integration: TRACE
+    com.example: INFO
+    org.springframework.integration: INFO

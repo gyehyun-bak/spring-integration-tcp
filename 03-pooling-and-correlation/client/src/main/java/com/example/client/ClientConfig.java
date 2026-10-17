@@ -6,7 +6,7 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.ip.dsl.Tcp;
 import org.springframework.integration.ip.tcp.connection.AbstractClientConnectionFactory;
-import org.springframework.integration.ip.tcp.connection.TcpNetClientConnectionFactory;
+import org.springframework.integration.ip.tcp.connection.TcpNioClientConnectionFactory;
 
 @Configuration
 public class ClientConfig {
@@ -16,7 +16,7 @@ public class ClientConfig {
 
     @Bean
     public AbstractClientConnectionFactory clientConnectionFactory() {
-        var factory = new TcpNetClientConnectionFactory(HOST, PORT);
+        var factory = new TcpNioClientConnectionFactory(HOST, PORT);
         var serializer = new AsciiLengthHeaderSerializer();
         factory.setSerializer(serializer);
         factory.setDeserializer(serializer);

@@ -21,6 +21,7 @@ public class HostConfig {
         var serializer = new AsciiLengthHeaderSerializer();
         factory.setSerializer(serializer);
         factory.setDeserializer(serializer);
+        factory.setBacklog(1024);
         return factory;
     }
 
@@ -29,7 +30,7 @@ public class HostConfig {
         return IntegrationFlow.from(Tcp.inboundGateway(serverConnectionFactory()))
                 .transform(Transformers.objectToString())
                 .handle(((payload, headers) -> {
-                    log.atInfo()
+                    log.atDebug()
                             .addKeyValue("payload", payload)
                             .addKeyValue("headers", headers)
                             .log("Message received.");

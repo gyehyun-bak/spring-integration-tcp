@@ -5,5 +5,5 @@ pid=$1
 secs=$2
 out=$3
 perf sched record -o /tmp/perf.data -- sleep "$secs" >/dev/null 2>&1
-perf script -i /tmp/perf.data -F tid,time,event,trace 2>/dev/null | python3 /perf/perf_summary.py "$pid" "$secs" >> "$out"
+perf script -i /tmp/perf.data -F comm,pid,tid,time,event,trace 2>/dev/null | python3 /perf/perf_summary.py "$pid" "$secs" >> "$out"
 rm -f /tmp/perf.data

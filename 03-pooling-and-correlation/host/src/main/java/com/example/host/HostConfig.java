@@ -7,7 +7,9 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.ip.dsl.Tcp;
 import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
-import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
+import org.springframework.integration.ip.tcp.connection.TcpNioServerConnectionFactory;
+
+import java.util.Map;
 
 @Configuration
 @Slf4j
@@ -17,7 +19,7 @@ public class HostConfig {
 
     @Bean
     public AbstractServerConnectionFactory serverConnectionFactory() {
-        var factory = new TcpNetServerConnectionFactory(PORT);
+        var factory = new TcpNioServerConnectionFactory(PORT);
         var serializer = new AsciiLengthHeaderSerializer();
         factory.setSerializer(serializer);
         factory.setDeserializer(serializer);
@@ -28,14 +30,16 @@ public class HostConfig {
     @Bean
     public IntegrationFlow tcpServerFlow() {
         return IntegrationFlow.from(Tcp.inboundGateway(serverConnectionFactory()))
-                .transform(Transformers.objectToString())
-                .handle(((payload, headers) -> {
+                .transform(Transformers.fromJson(Map.class))
+                .handle(Map.class, (request, headers) -> {
                     log.atDebug()
-                            .addKeyValue("payload", payload)
+                            .addKeyValue("payload", request)
                             .addKeyValue("headers", headers)
                             .log("Message received.");
-                    return "ECHO: " + payload;
-                }))
+                    return Map.of("correlationId", request.get("correlationId"),
+                            "message", "ECHO: " + request.get("message"));
+                })
+                .transform(Transformers.toJson())
                 .get();
     }
 }
